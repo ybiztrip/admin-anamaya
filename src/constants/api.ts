@@ -7,3 +7,7 @@ export const AUTH_LOGIN_API = AUTH_API + '/login';
 
 export const USERS_API = API_V1 + '/users';
 export const USERS_DETAIL_API = USERS_API + '/:id';
+
+export const HOTEL_API = API_V1 + '/hotel';
+export const HOTEL_SEARCH_API = HOTEL_API + '/search';
+export const HOTEL_GEO_LIST_API = HOTEL_API + '/geo/list';

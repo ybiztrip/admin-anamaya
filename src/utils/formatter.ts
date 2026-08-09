@@ -1,0 +1,20 @@
+export const formatDuration = (minsStr?: string) => {
+  const mins = Number(minsStr ?? 0);
+  const h = Math.floor(mins / 60);
+  const m = mins % 60;
+  return h ? `${h}h ${m}m` : `${m}m`;
+};
+
+export const formatIDR = (amountStr?: string | number) => {
+  const n = Math.round(Number(amountStr ?? 0));
+  return new Intl.NumberFormat('id-ID').format(n);
+};
+
+export const rupiahFormatter = (value?: string | number) => {
+  const num = Number(value ?? 0);
+  return `Rp${num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`;
+};
+
+export const rupiahParser = (value?: string) => {
+  return Number((value ?? '').replace(/[^0-9]/g, ''));
+};

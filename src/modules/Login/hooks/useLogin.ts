@@ -5,11 +5,12 @@ import { useNavigate } from 'react-router-dom';
 import { fetchUserDetail } from '@/api';
 import { AUTH_LOGIN_API } from '@/constants/api';
 import { DEFAULT_ERROR_MESSAGE } from '@/constants/common';
-import { HOME_PATH } from '@/constants/routePath';
+import { HOME_PATH, LOGIN_PATH } from '@/constants/routePath';
 import { ACCESS_TOKEN, USER } from '@/constants/storageKey';
 import type { UserType } from '@/types';
 import axios from '@/utils/api';
-import { localStorageSet } from '@/utils/localStorage';
+import { localStorageClear, localStorageSet } from '@/utils/localStorage';
+import { sessionStorageClear } from '@/utils/sessionStorage';
 
 export type useLoginProps = {
   isLoading: boolean;
@@ -31,25 +32,34 @@ const useLogin = () => {
       email: values.username,
       password: values.password,
     };
-    const result = await axios
-      .post(apiURL, payload)
-      .then(async (response) => {
-        setIsLoading(false);
-        const { token, id } = response.data.data;
-        localStorageSet(ACCESS_TOKEN, token);
-        const userDetail = await fetchUserDetail(id);
-        localStorageSet<UserType>(USER, { ...userDetail.data });
-        navigate(HOME_PATH);
-      })
-      .catch((e: any) => {
-        if (e?.response?.data?.message) {
-          message.error(e?.response?.data?.message);
-        } else {
-          message.error(DEFAULT_ERROR_MESSAGE);
-        }
-        setIsLoading(false);
-      });
-    return result;
+    try {
+      const response = await axios.post(apiURL, payload);
+      const { token, id } = response.data.data;
+      localStorageSet(ACCESS_TOKEN, token);
+
+      const userDetail = await fetchUserDetail(id);
+      const roleCodes = userDetail.data?.roles?.map((role) => role.roleCode) ?? [];
+      const isSuperAdmin = roleCodes.includes('SUPER_ADMIN');
+
+      if (!isSuperAdmin) {
+        localStorageClear();
+        sessionStorageClear();
+        message.error('You are not authorized to access this application');
+        navigate(LOGIN_PATH, { replace: true });
+        return;
+      }
+
+      localStorageSet<UserType>(USER, { ...userDetail.data });
+      navigate(HOME_PATH);
+    } catch (e: any) {
+      if (e?.response?.data?.message) {
+        message.error(e?.response?.data?.message);
+      } else {
+        message.error(DEFAULT_ERROR_MESSAGE);
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return {

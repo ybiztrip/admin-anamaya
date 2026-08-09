@@ -22,7 +22,7 @@ createRoot(document.getElementById('root')!).render(
         components: {
           Layout: {
             headerHeight: 80,
-            bodyBg: '#ffffff',
+            bodyBg: '#f5f6f8',
           },
           Menu: {
             itemSelectedColor: '#0d6eff',

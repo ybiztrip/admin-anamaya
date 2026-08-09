@@ -110,7 +110,7 @@ const AppLayout = ({
           </div>
         </Link>
         <Title level={4} className="flex-grow text-center">
-          Anamaya Travel Platform
+          Anamaya Admin
         </Title>
         <div className="flex items-center justify-end gap-4">
           <Popover
@@ -129,11 +129,6 @@ const AppLayout = ({
                 </div>
                 <div className="h-px bg-gray-200 mb-3" />
                 <div className="flex flex-col gap-2">
-                  <Link to="/profile">
-                    <Button block type="default">
-                      Profile
-                    </Button>
-                  </Link>
                   <Button block type="primary" danger onClick={logout}>
                     Logout
                   </Button>
@@ -154,7 +149,7 @@ const AppLayout = ({
             breakpoint="lg"
             collapsedWidth={80}
             onCollapse={(collapsed) => setIsCollapsed(collapsed)}
-            style={{ overflow: 'auto' }}
+            style={{ overflow: 'auto', background: '#E1E6EE' }}
           >
             <Menu
               className="mt-8 app-sidebar-menu"

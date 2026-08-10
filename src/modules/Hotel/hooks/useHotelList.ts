@@ -38,6 +38,7 @@ export default function useHotelList() {
     pageSize,
     setPage,
     setPageSize,
+    appliedFilter,
     onSearch,
     data,
     isLoading,

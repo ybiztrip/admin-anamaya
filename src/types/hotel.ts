@@ -134,3 +134,18 @@ export type HotelPropertyDetailType = {
 export type HotelPropertyDetailResponseType = {
   propertyDatas: HotelPropertyDetailType[];
 };
+
+export type HotelProviderType = {
+  id: number;
+  propertyId: number;
+  providerPropertyId: string;
+  providerAliasName: string;
+  provider: string;
+  status: string | null;
+  createdOn: number | null;
+  updatedOn: number;
+};
+
+export type HotelProviderUpdateIdsPayloadType = {
+  providerPropertyId: number[];
+};

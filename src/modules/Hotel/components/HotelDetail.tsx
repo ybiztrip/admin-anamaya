@@ -3,7 +3,9 @@ import { Card, Col, Image, Row, Space, Tabs, Tag, Typography } from 'antd';
 
 import type { HotelPropertyDetailType } from '@/types';
 
-function HotelDetail({ hotel }: { hotel: HotelPropertyDetailType }) {
+import HotelProvider from './HotelProvider';
+
+function HotelDetail({ hotel }: Readonly<{ hotel: HotelPropertyDetailType }>) {
   const { Text, Title } = Typography;
   const summary = hotel?.propertySummary;
   const addressLines = summary?.address?.lines ?? [];
@@ -216,6 +218,14 @@ function HotelDetail({ hotel }: { hotel: HotelPropertyDetailType }) {
               <div className="text-sm text-gray-500">Information not available.</div>
             )}
           </div>
+        </Tabs.TabPane>
+
+        <Tabs.TabPane tab="Providers" key="providers">
+          <HotelProvider propertyId={hotel.propertyId} />
+        </Tabs.TabPane>
+
+        <Tabs.TabPane tab="Open Search" key="open-search">
+          {/* TODO: Open Search */}
         </Tabs.TabPane>
       </Tabs>
     </Card>

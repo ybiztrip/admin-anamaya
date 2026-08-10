@@ -12,3 +12,4 @@ export const HOTEL_API = API_V1 + '/hotel';
 export const HOTEL_SEARCH_API = HOTEL_API + '/search';
 export const HOTEL_GEO_LIST_API = HOTEL_API + '/geo/list';
 export const HOTEL_PROPERTY_DETAIL_API = HOTEL_API + '/property-detail';
+export const HOTEL_ADMIN_PROPERTY_MAPPING_API = HOTEL_API + '/admin/property-mapping/:id';

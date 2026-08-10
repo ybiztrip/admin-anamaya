@@ -1,4 +1,5 @@
 import {
+  HOTEL_ADMIN_PROPERTY_MAPPING_API,
   HOTEL_GEO_LIST_API,
   HOTEL_PROPERTY_DETAIL_API,
   HOTEL_SEARCH_API,
@@ -9,6 +10,8 @@ import type {
   HotelGeoListType,
   HotelPropertyDetailPayloadType,
   HotelPropertyDetailResponseType,
+  HotelProviderType,
+  HotelProviderUpdateIdsPayloadType,
   HotelSearchPayloadType,
   HotelType,
   PaginationResponseType,
@@ -16,6 +19,8 @@ import type {
   UserType,
 } from '@/types';
 import axios from '@/utils/api';
+
+import { mockFetchHotelProvider } from './mock';
 
 export async function fetchUserDetail(id: string): Promise<ResponseType<UserType>> {
   const res = await axios.get(USERS_DETAIL_API.replace(':id', id));
@@ -40,5 +45,20 @@ export async function fetchHotelPropertyDetail(
   params: HotelPropertyDetailPayloadType,
 ): Promise<ResponseType<HotelPropertyDetailResponseType>> {
   const res = await axios.post(HOTEL_PROPERTY_DETAIL_API, params);
+  return res.data;
+}
+
+export async function fetchHotelProvider(id: string): Promise<ResponseType<HotelProviderType[]>> {
+  // const res = await axios.get(HOTEL_ADMIN_PROPERTY_MAPPING_API.replace(':id', id));
+  // return res.data;
+  console.log('id', id);
+  return mockFetchHotelProvider;
+}
+
+export async function updateHotelProviderIds(
+  id: string,
+  params: HotelProviderUpdateIdsPayloadType,
+): Promise<ResponseType<HotelProviderType>> {
+  const res = await axios.post(HOTEL_ADMIN_PROPERTY_MAPPING_API.replace(':id', id), params);
   return res.data;
 }

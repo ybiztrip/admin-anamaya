@@ -1,4 +1,5 @@
 import {
+  HOTEL_ADMIN_OPEN_SEARCH_API,
   HOTEL_ADMIN_PROPERTY_MAPPING_API,
   HOTEL_GEO_LIST_API,
   HOTEL_PROPERTY_DETAIL_API,
@@ -8,6 +9,7 @@ import {
 import type {
   HotelGeoListPayloadType,
   HotelGeoListType,
+  HotelOpenSearchType,
   HotelPropertyDetailPayloadType,
   HotelPropertyDetailResponseType,
   HotelProviderType,
@@ -20,7 +22,7 @@ import type {
 } from '@/types';
 import axios from '@/utils/api';
 
-import { mockFetchHotelProvider } from './mock';
+import { mockFetchHotelOpenSearch, mockFetchHotelProvider } from './mock';
 
 export async function fetchUserDetail(id: string): Promise<ResponseType<UserType>> {
   const res = await axios.get(USERS_DETAIL_API.replace(':id', id));
@@ -58,7 +60,22 @@ export async function fetchHotelProvider(id: string): Promise<ResponseType<Hotel
 export async function updateHotelProviderIds(
   id: string,
   params: HotelProviderUpdateIdsPayloadType,
-): Promise<ResponseType<HotelProviderType>> {
+): Promise<ResponseType<any>> {
   const res = await axios.post(HOTEL_ADMIN_PROPERTY_MAPPING_API.replace(':id', id), params);
+  return res.data;
+}
+
+export async function fetchHotelOpenSearch(id: string): Promise<ResponseType<HotelOpenSearchType>> {
+  // const res = await axios.get(HOTEL_ADMIN_OPEN_SEARCH_API.replace(':id', id));
+  // return res.data;
+  console.log('id', id);
+  return mockFetchHotelOpenSearch;
+}
+
+export async function updateHotelOpenSearch(
+  id: string,
+  params: HotelOpenSearchType,
+): Promise<ResponseType<any>> {
+  const res = await axios.put(HOTEL_ADMIN_OPEN_SEARCH_API.replace(':id', id), params);
   return res.data;
 }

@@ -3,6 +3,7 @@ import { message } from 'antd';
 
 import { fetchHotelProvider, updateHotelProviderIds } from '@/api';
 import { DEFAULT_ERROR_MESSAGE } from '@/constants/common';
+import { HOTEL_PROVIDER } from '@/constants/queryKey';
 
 export default function useHotelProvider(propertyId: string) {
   const {
@@ -11,7 +12,7 @@ export default function useHotelProvider(propertyId: string) {
     error,
     refetch: refetchProvider,
   } = useQuery({
-    queryKey: ['hotel-provider', propertyId],
+    queryKey: [HOTEL_PROVIDER, propertyId],
     queryFn: () => fetchHotelProvider(propertyId),
     enabled: Boolean(propertyId),
   });

@@ -1,4 +1,4 @@
-import type { HotelProviderType, ResponseType } from '@/types';
+import type { HotelOpenSearchType, HotelProviderType, ResponseType } from '@/types';
 
 export const mockFetchHotelProvider: ResponseType<HotelProviderType[]> = {
   success: true,
@@ -35,4 +35,24 @@ export const mockFetchHotelProvider: ResponseType<HotelProviderType[]> = {
       updatedOn: 1764982727000,
     },
   ],
+};
+
+export const mockFetchHotelOpenSearch: ResponseType<HotelOpenSearchType> = {
+  success: true,
+  message: 'Success',
+  data: {
+    id: '9409190',
+    name: 'Hotel Daisy',
+    star: 3,
+    estimationPrice: 300000,
+    address: ['Via Dott. F. Garofoli, 294'],
+    province: 'VR',
+    city: 'San Giovanni Lupatoto',
+    countryCode: 'IT',
+    postalCode: '37057',
+    latitude: 45.396868,
+    longitude: 11.025483,
+    rank: 286700,
+    accommodationType: 'INN',
+  },
 };

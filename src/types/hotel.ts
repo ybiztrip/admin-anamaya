@@ -149,3 +149,23 @@ export type HotelProviderType = {
 export type HotelProviderUpdateIdsPayloadType = {
   providerPropertyId: number[];
 };
+
+export type HotelOpenSearchPayloadType = {
+  propertyIds: string[];
+};
+
+export type HotelOpenSearchType = {
+  id: string;
+  name: string;
+  star: number;
+  estimationPrice: number;
+  address: string[];
+  province: string;
+  city: string;
+  countryCode: string;
+  postalCode: string;
+  latitude: number;
+  longitude: number;
+  rank: number;
+  accommodationType: string;
+};

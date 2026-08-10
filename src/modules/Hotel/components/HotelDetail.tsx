@@ -3,6 +3,7 @@ import { Card, Col, Image, Row, Space, Tabs, Tag, Typography } from 'antd';
 
 import type { HotelPropertyDetailType } from '@/types';
 
+import HotelOpenSearch from './HotelOpenSearch';
 import HotelProvider from './HotelProvider';
 
 function HotelDetail({ hotel }: Readonly<{ hotel: HotelPropertyDetailType }>) {
@@ -230,7 +231,7 @@ function HotelDetail({ hotel }: Readonly<{ hotel: HotelPropertyDetailType }>) {
         </Tabs.TabPane>
 
         <Tabs.TabPane tab="Open Search" key="open-search">
-          {/* TODO: Open Search */}
+          <HotelOpenSearch propertyId={hotel.propertyId} />
         </Tabs.TabPane>
       </Tabs>
     </Card>

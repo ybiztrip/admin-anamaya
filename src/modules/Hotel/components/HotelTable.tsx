@@ -1,19 +1,23 @@
 import { Table } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
+import { getHotelDetailPath } from '@/constants/routePath';
 import type { HotelType } from '@/types';
 
-type HotelListProps = {
+type HotelListProps = Readonly<{
   data: HotelType[];
   loading: boolean;
   total: number;
   page: number;
   pageSize: number;
   onPageChange: (page: number, pageSize: number) => void;
-};
+}>;
 
 function HotelList({ data, loading, total, page, pageSize, onPageChange }: HotelListProps) {
+  const navigate = useNavigate();
+
   const openHotelDetail = (hotel: HotelType) => {
-    console.log(hotel);
+    navigate(getHotelDetailPath(hotel.id));
   };
 
   return (

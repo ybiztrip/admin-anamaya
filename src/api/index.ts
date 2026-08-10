@@ -1,7 +1,14 @@
-import { HOTEL_GEO_LIST_API, HOTEL_SEARCH_API, USERS_DETAIL_API } from '@/constants/api';
+import {
+  HOTEL_GEO_LIST_API,
+  HOTEL_PROPERTY_DETAIL_API,
+  HOTEL_SEARCH_API,
+  USERS_DETAIL_API,
+} from '@/constants/api';
 import type {
   HotelGeoListPayloadType,
   HotelGeoListType,
+  HotelPropertyDetailPayloadType,
+  HotelPropertyDetailResponseType,
   HotelSearchPayloadType,
   HotelType,
   PaginationResponseType,
@@ -26,5 +33,12 @@ export async function fetchHotelGeoList(
   params: HotelGeoListPayloadType,
 ): Promise<ResponseType<HotelGeoListType>> {
   const res = await axios.post(HOTEL_GEO_LIST_API, params);
+  return res.data;
+}
+
+export async function fetchHotelPropertyDetail(
+  params: HotelPropertyDetailPayloadType,
+): Promise<ResponseType<HotelPropertyDetailResponseType>> {
+  const res = await axios.post(HOTEL_PROPERTY_DETAIL_API, params);
   return res.data;
 }

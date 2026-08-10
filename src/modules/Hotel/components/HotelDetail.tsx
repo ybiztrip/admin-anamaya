@@ -66,45 +66,50 @@ function HotelDetail({ hotel }: Readonly<{ hotel: HotelPropertyDetailType }>) {
         </div>
       </div>
 
-      {images.length > 1 && (
-        <>
-          <Image.PreviewGroup>
-            <Row gutter={[8, 8]} className="mt-4">
-              <Col xs={24} md={16}>
-                {mainImage ? (
-                  <Image
-                    src={mainImage}
-                    alt={summary?.name ?? 'Hotel'}
-                    width="100%"
-                    height={372}
-                    style={{ objectFit: 'cover', borderRadius: 8 }}
-                  />
-                ) : (
-                  <div
-                    style={{ width: '100%', height: 240, background: '#f5f5f5', borderRadius: 8 }}
-                  />
-                )}
-              </Col>
-              <Col xs={24} md={8}>
-                {images.slice(1, 4).map((url, idx) => (
-                  <Image
-                    key={`${url}-${idx}`}
-                    src={url}
-                    width="100%"
-                    height={120}
-                    style={{ objectFit: 'cover', borderRadius: 6 }}
-                  />
-                ))}
-                {images.slice(5, images.length).map((url, idx) => (
-                  <Image key={`${url}-${idx}`} src={url} style={{ display: 'none' }} />
-                ))}
-              </Col>
-            </Row>
-          </Image.PreviewGroup>
-        </>
-      )}
-
       <Tabs>
+        <Tabs.TabPane tab="Galleries" key="galleries">
+          {images.length > 1 && (
+            <Image.PreviewGroup>
+              <Row gutter={[8, 8]} className="mt-4">
+                <Col xs={24} md={16}>
+                  {mainImage ? (
+                    <Image
+                      src={mainImage}
+                      alt={summary?.name ?? 'Hotel'}
+                      width="100%"
+                      height={372}
+                      style={{ objectFit: 'cover', borderRadius: 8 }}
+                    />
+                  ) : (
+                    <div
+                      style={{
+                        width: '100%',
+                        height: 240,
+                        background: '#f5f5f5',
+                        borderRadius: 8,
+                      }}
+                    />
+                  )}
+                </Col>
+                <Col xs={24} md={8}>
+                  {images.slice(1, 4).map((url, idx) => (
+                    <Image
+                      key={`${url}-${idx}`}
+                      src={url}
+                      width="100%"
+                      height={120}
+                      style={{ objectFit: 'cover', borderRadius: 6 }}
+                    />
+                  ))}
+                  {images.slice(5, images.length).map((url, idx) => (
+                    <Image key={`${url}-${idx}`} src={url} style={{ display: 'none' }} />
+                  ))}
+                </Col>
+              </Row>
+            </Image.PreviewGroup>
+          )}
+        </Tabs.TabPane>
+
         <Tabs.TabPane tab="Map" key="map">
           {mapUrl ? (
             <div>

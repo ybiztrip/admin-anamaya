@@ -45,7 +45,7 @@ export const mockFetchHotelOpenSearch: ResponseType<HotelOpenSearchType> = {
     name: 'Hotel Daisy',
     star: 3,
     estimationPrice: 300000,
-    address: ['Via Dott. F. Garofoli, 294'],
+    address: '["Via Dott. F. Garofoli, 294"]',
     province: 'VR',
     city: 'San Giovanni Lupatoto',
     countryCode: 'IT',

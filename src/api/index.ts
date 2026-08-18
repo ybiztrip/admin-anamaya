@@ -1,4 +1,8 @@
+import type { AxiosRequestConfig } from 'axios';
+
 import {
+  DOCUMENT_UPLOAD_API,
+  DOCUMENT_URL_API,
   HOTEL_ADMIN_OPEN_SEARCH_API,
   HOTEL_ADMIN_PROPERTY_MAPPING_API,
   HOTEL_GEO_LIST_API,
@@ -71,5 +75,18 @@ export async function updateHotelOpenSearch(
   params: HotelOpenSearchType,
 ): Promise<ResponseType<any>> {
   const res = await axios.put(HOTEL_ADMIN_OPEN_SEARCH_API.replace(':id', id), params);
+  return res.data;
+}
+
+export async function documentUpload(
+  params: FormData,
+  config: AxiosRequestConfig<FormData>,
+): Promise<ResponseType<any>> {
+  const res = await axios.post(DOCUMENT_UPLOAD_API, params, config);
+  return res.data;
+}
+
+export async function documentUrl(key: string): Promise<ResponseType<string>> {
+  const res = await axios.get(DOCUMENT_URL_API, { params: { key } });
   return res.data;
 }

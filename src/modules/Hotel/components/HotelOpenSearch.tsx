@@ -21,24 +21,37 @@ export default function HotelOpenSearch({ propertyId }: HotelOpenSearchProps) {
   useEffect(() => {
     if (!data) return;
 
+    let addressText = data.address || '';
+
+    try {
+      const parsed = JSON.parse(data.address);
+      if (Array.isArray(parsed)) {
+        addressText = parsed.join('\n');
+      }
+    } catch {
+      addressText = data.address;
+    }
+
     form.setFieldsValue({
       ...data,
-      addressText: data.address?.join('\n') ?? '',
+      addressText,
     });
   }, [data, form]);
 
   const onFinish = (values: HotelOpenSearchFormValues) => {
+    const lines = values.addressText
+      ? values.addressText
+          .split('\n')
+          .map((line) => line.trim())
+          .filter(Boolean)
+      : [];
+
     const payload: HotelOpenSearchType = {
       id: values.id,
       name: values.name,
       star: values.star,
       estimationPrice: values.estimationPrice,
-      address: values.addressText
-        ? values.addressText
-            .split('\n')
-            .map((line) => line.trim())
-            .filter(Boolean)
-        : [],
+      address: JSON.stringify(lines),
       province: values.province,
       city: values.city,
       countryCode: values.countryCode,
@@ -48,7 +61,6 @@ export default function HotelOpenSearch({ propertyId }: HotelOpenSearchProps) {
       rank: values.rank,
       accommodationType: values.accommodationType,
     };
-
     void saveOpenSearch(payload);
   };
 
@@ -75,48 +87,88 @@ export default function HotelOpenSearch({ propertyId }: HotelOpenSearchProps) {
             >
               <Input />
             </Form.Item>
-            <Form.Item label="Star" name="star">
+            <Form.Item
+              label="Star"
+              name="star"
+              rules={[{ required: true, message: 'Star is required' }]}
+            >
               <InputNumber min={0} max={5} className="w-full" />
             </Form.Item>
-            <Form.Item label="Estimation Price" name="estimationPrice">
+            <Form.Item
+              label="Estimation Price"
+              name="estimationPrice"
+              rules={[{ required: true, message: 'Estimation price is required' }]}
+            >
               <InputNumber min={0} className="w-full" />
             </Form.Item>
           </Space>
-
-          <Form.Item label="Address" name="addressText">
+          <Form.Item
+            label="Address"
+            name="addressText"
+            rules={[{ required: true, message: 'Address is required' }]}
+          >
             <TextArea rows={3} placeholder="One line per address line" />
           </Form.Item>
-
           <Space size={16} wrap className="w-full">
-            <Form.Item label="Province" name="province">
+            <Form.Item
+              label="Province"
+              name="province"
+              rules={[{ required: true, message: 'Province is required' }]}
+            >
               <Input />
             </Form.Item>
-            <Form.Item label="City" name="city">
+            <Form.Item
+              label="City"
+              name="city"
+              rules={[{ required: true, message: 'City is required' }]}
+            >
               <Input />
             </Form.Item>
-            <Form.Item label="Country Code" name="countryCode">
+            <Form.Item
+              label="Country Code"
+              name="countryCode"
+              rules={[{ required: true, message: 'Country code is required' }]}
+            >
               <Input />
             </Form.Item>
-            <Form.Item label="Postal Code" name="postalCode">
+            <Form.Item
+              label="Postal Code"
+              name="postalCode"
+              rules={[{ required: true, message: 'Postal code is required' }]}
+            >
               <Input />
             </Form.Item>
           </Space>
-
           <Space size={16} wrap className="w-full">
-            <Form.Item label="Latitude" name="latitude">
+            <Form.Item
+              label="Latitude"
+              name="latitude"
+              rules={[{ required: true, message: 'Latitude is required' }]}
+            >
               <InputNumber className="w-full" />
             </Form.Item>
-            <Form.Item label="Longitude" name="longitude">
+            <Form.Item
+              label="Longitude"
+              name="longitude"
+              rules={[{ required: true, message: 'Longitude is required' }]}
+            >
               <InputNumber className="w-full" />
             </Form.Item>
-            <Form.Item label="Rank" name="rank">
+            <Form.Item
+              label="Rank"
+              name="rank"
+              rules={[{ required: true, message: 'Rank is required' }]}
+            >
               <InputNumber min={0} className="w-full" />
             </Form.Item>
-            <Form.Item label="Accommodation Type" name="accommodationType">
+            <Form.Item
+              label="Accommodation Type"
+              name="accommodationType"
+              rules={[{ required: true, message: 'Accommodation type is required' }]}
+            >
               <Input />
             </Form.Item>
           </Space>
-
           <div className="flex justify-end">
             <Form.Item noStyle>
               <Button type="primary" htmlType="submit" disabled={isSaving}>

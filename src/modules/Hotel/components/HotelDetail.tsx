@@ -1,5 +1,5 @@
 import { StarFilled } from '@ant-design/icons';
-import { Card, Col, Image, Row, Space, Tabs, Tag, Typography } from 'antd';
+import { Card, Col, Collapse, Image, Row, Space, Tabs, Tag, Typography } from 'antd';
 
 import type { HotelPropertyDetailType } from '@/types';
 
@@ -44,197 +44,209 @@ function HotelDetail({ hotel }: Readonly<{ hotel: HotelPropertyDetailType }>) {
     ) : null;
 
   return (
-    <Card key={hotel.propertyId} size="small">
-      <div>
-        <div className="text-xl font-semibold">{summary?.name ?? '-'}</div>
-        {starCount > 0 && (
-          <div className="flex items-center gap-1 text-xs text-gray-500 mt-1">
-            {Array.from({ length: starCount }).map((_, i) => (
-              <StarFilled key={i} style={{ color: '#69A8FF', fontSize: 12 }} />
-            ))}
-          </div>
-        )}
-        <div className="text-sm text-gray-500 mt-2">{address || '-'}</div>
-        <div className="text-xs text-gray-500 mt-2">
-          {summary?.phoneNumber ? `• ${summary.phoneNumber}` : ''}
-        </div>
-
-        <div className="mt-3">
-          <Space size={6} wrap>
-            {summary?.accommodationType && <Tag>{summary.accommodationType}</Tag>}
-            {summary?.reviewScore && <Tag>Score: {summary.reviewScore}</Tag>}
-          </Space>
-        </div>
-      </div>
-
-      <Tabs>
-        <Tabs.TabPane tab="Galleries" key="galleries">
-          {images.length > 1 && (
-            <Image.PreviewGroup>
-              <Row gutter={[8, 8]} className="mt-4">
-                <Col xs={24} md={16}>
-                  {mainImage ? (
-                    <Image
-                      src={mainImage}
-                      alt={summary?.name ?? 'Hotel'}
-                      width="100%"
-                      height={372}
-                      style={{ objectFit: 'cover', borderRadius: 8 }}
-                    />
-                  ) : (
-                    <div
-                      style={{
-                        width: '100%',
-                        height: 240,
-                        background: '#f5f5f5',
-                        borderRadius: 8,
-                      }}
-                    />
-                  )}
-                </Col>
-                <Col xs={24} md={8}>
-                  {images.slice(1, 4).map((url, idx) => (
-                    <Image
-                      key={`${url}-${idx}`}
-                      src={url}
-                      width="100%"
-                      height={120}
-                      style={{ objectFit: 'cover', borderRadius: 6 }}
-                    />
-                  ))}
-                  {images.slice(5, images.length).map((url, idx) => (
-                    <Image key={`${url}-${idx}`} src={url} style={{ display: 'none' }} />
-                  ))}
-                </Col>
-              </Row>
-            </Image.PreviewGroup>
-          )}
-        </Tabs.TabPane>
-
-        <Tabs.TabPane tab="Map" key="map">
-          {mapUrl ? (
-            <div>
-              <iframe
-                title="hotel-map"
-                src={mapUrl}
-                style={{ width: '100%', height: 240, border: 0, borderRadius: 8 }}
-                loading="lazy"
-              />
-              {mapLink && (
-                <div className="text-xs text-gray-500 mt-2">
-                  <a href={mapLink} target="_blank" rel="noreferrer">
-                    Open in Google Maps
-                  </a>
-                </div>
-              )}
-            </div>
-          ) : (
-            <div className="text-sm text-gray-500">Map location not available.</div>
-          )}
-        </Tabs.TabPane>
-
-        <Tabs.TabPane tab="Facilities" key="facilities">
-          {facilities.length > 0 ? (
-            <ul className="m-0 list-none space-y-2 pl-0 text-sm text-gray-800">
-              {facilities.map((facility, idx) => (
-                <li key={`${idx}-${facility}`} className="flex gap-2">
-                  <span
-                    className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#69A8FF]"
-                    aria-hidden
-                  />
-                  <span>{facility}</span>
-                </li>
+    <>
+      <Card key={hotel.propertyId}>
+        <div>
+          <div className="text-xl font-semibold">{summary?.name ?? '-'}</div>
+          {starCount > 0 && (
+            <div className="flex items-center gap-1 text-xs text-gray-500 mt-1">
+              {Array.from({ length: starCount }).map((_, i) => (
+                <StarFilled key={i} style={{ color: '#69A8FF', fontSize: 12 }} />
               ))}
-            </ul>
-          ) : (
-            <div className="text-sm text-gray-500">No facilities listed.</div>
+            </div>
           )}
-        </Tabs.TabPane>
-
-        <Tabs.TabPane tab="Check-in & Important Information" key="check-in-info">
-          <div className="space-y-6 text-gray-800">
-            {(checkInInfo?.begin_time || checkInInfo?.min_age) && (
-              <div>
-                <Title level={5} className="m-0">
-                  Check-in
-                </Title>
-                <div className="mt-2 space-y-1 text-sm text-gray-700">
-                  {checkInInfo?.begin_time && (
-                    <div>
-                      <Text type="secondary">Check-in time:</Text> {checkInInfo.begin_time}
-                    </div>
-                  )}
-                  {checkInInfo?.min_age && (
-                    <div>
-                      <Text type="secondary">Minimum age:</Text> {checkInInfo.min_age}
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {checkOutInfo?.time && (
-              <div>
-                <Title level={5} className="m-0">
-                  Check-out
-                </Title>
-                <div className="mt-2 text-sm text-gray-700">
-                  <Text type="secondary">Check-out time:</Text> {checkOutInfo.time}
-                </div>
-              </div>
-            )}
-
-            {(hasHtml(checkInInfo?.instructions) || hasHtml(checkInInfo?.special_instructions)) && (
-              <div>
-                <Title level={5} className="m-0">
-                  Important Information
-                </Title>
-                <div className="mt-2 space-y-3">
-                  {renderHtml(checkInInfo?.instructions)}
-                  {renderHtml(checkInInfo?.special_instructions)}
-                </div>
-              </div>
-            )}
-
-            {(hasHtml(feesInfo?.optional) || hasHtml(feesInfo?.mandatory)) && (
-              <div>
-                <Title level={5} className="m-0">
-                  Fees & Charges
-                </Title>
-                <div className="mt-2 space-y-3">
-                  {renderHtml(feesInfo?.optional)}
-                  {renderHtml(feesInfo?.mandatory)}
-                </div>
-              </div>
-            )}
-
-            {(hasHtml(policiesInfo?.instructions) || hasHtml(policiesInfo?.know_before_you_go)) && (
-              <div>
-                <Title level={5} className="m-0">
-                  Policies
-                </Title>
-                <div className="mt-2 space-y-3">
-                  {renderHtml(policiesInfo?.instructions)}
-                  {renderHtml(policiesInfo?.know_before_you_go)}
-                </div>
-              </div>
-            )}
-
-            {!checkInInfo && !checkOutInfo && !feesInfo && !policiesInfo && (
-              <div className="text-sm text-gray-500">Information not available.</div>
-            )}
+          <div className="text-sm text-gray-500 mt-2">{address || '-'}</div>
+          <div className="text-xs text-gray-500 mt-2">
+            {summary?.phoneNumber ? `• ${summary.phoneNumber}` : ''}
           </div>
-        </Tabs.TabPane>
 
-        <Tabs.TabPane tab="Providers" key="providers">
-          <HotelProvider propertyId={hotel.propertyId} />
-        </Tabs.TabPane>
+          <div className="mt-3">
+            <Space size={6} wrap>
+              {summary?.accommodationType && <Tag>{summary.accommodationType}</Tag>}
+              {summary?.reviewScore && <Tag>Score: {summary.reviewScore}</Tag>}
+            </Space>
+          </div>
+        </div>
 
-        <Tabs.TabPane tab="Open Search" key="open-search">
-          <HotelOpenSearch propertyId={hotel.propertyId} />
-        </Tabs.TabPane>
-      </Tabs>
-    </Card>
+        <Tabs>
+          <Tabs.TabPane tab="Providers" key="providers">
+            <HotelProvider propertyId={hotel.propertyId} />
+          </Tabs.TabPane>
+
+          <Tabs.TabPane tab="Open Search" key="open-search">
+            <HotelOpenSearch propertyId={hotel.propertyId} />
+          </Tabs.TabPane>
+        </Tabs>
+      </Card>
+
+      <Card size="small" className="mt-4">
+        <Collapse defaultActiveKey={[]} bordered={false} style={{ background: 'transparent' }}>
+          <Collapse.Panel header="Hotel details" key="details">
+            <Tabs>
+              <Tabs.TabPane tab="Galleries" key="galleries">
+                {images.length > 1 && (
+                  <Image.PreviewGroup>
+                    <Row gutter={[8, 8]} className="mt-4">
+                      <Col xs={24} md={16}>
+                        {mainImage ? (
+                          <Image
+                            src={mainImage}
+                            alt={summary?.name ?? 'Hotel'}
+                            width="100%"
+                            height={372}
+                            style={{ objectFit: 'cover', borderRadius: 8 }}
+                          />
+                        ) : (
+                          <div
+                            style={{
+                              width: '100%',
+                              height: 240,
+                              background: '#f5f5f5',
+                              borderRadius: 8,
+                            }}
+                          />
+                        )}
+                      </Col>
+                      <Col xs={24} md={8}>
+                        {images.slice(1, 4).map((url, idx) => (
+                          <Image
+                            key={`${url}-${idx}`}
+                            src={url}
+                            width="100%"
+                            height={120}
+                            style={{ objectFit: 'cover', borderRadius: 6 }}
+                          />
+                        ))}
+                        {images.slice(5, images.length).map((url, idx) => (
+                          <Image key={`${url}-${idx}`} src={url} style={{ display: 'none' }} />
+                        ))}
+                      </Col>
+                    </Row>
+                  </Image.PreviewGroup>
+                )}
+              </Tabs.TabPane>
+
+              <Tabs.TabPane tab="Map" key="map">
+                {mapUrl ? (
+                  <div>
+                    <iframe
+                      title="hotel-map"
+                      src={mapUrl}
+                      style={{ width: '100%', height: 240, border: 0, borderRadius: 8 }}
+                      loading="lazy"
+                    />
+                    {mapLink && (
+                      <div className="text-xs text-gray-500 mt-2">
+                        <a href={mapLink} target="_blank" rel="noreferrer">
+                          Open in Google Maps
+                        </a>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="text-sm text-gray-500">Map location not available.</div>
+                )}
+              </Tabs.TabPane>
+
+              <Tabs.TabPane tab="Facilities" key="facilities">
+                {facilities.length > 0 ? (
+                  <ul className="m-0 list-none space-y-2 pl-0 text-sm text-gray-800">
+                    {facilities.map((facility, idx) => (
+                      <li key={`${idx}-${facility}`} className="flex gap-2">
+                        <span
+                          className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#69A8FF]"
+                          aria-hidden
+                        />
+                        <span>{facility}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <div className="text-sm text-gray-500">No facilities listed.</div>
+                )}
+              </Tabs.TabPane>
+
+              <Tabs.TabPane tab="Check-in & Important Information" key="check-in-info">
+                <div className="space-y-6 text-gray-800">
+                  {(checkInInfo?.begin_time || checkInInfo?.min_age) && (
+                    <div>
+                      <Title level={5} className="m-0">
+                        Check-in
+                      </Title>
+                      <div className="mt-2 space-y-1 text-sm text-gray-700">
+                        {checkInInfo?.begin_time && (
+                          <div>
+                            <Text type="secondary">Check-in time:</Text> {checkInInfo.begin_time}
+                          </div>
+                        )}
+                        {checkInInfo?.min_age && (
+                          <div>
+                            <Text type="secondary">Minimum age:</Text> {checkInInfo.min_age}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {checkOutInfo?.time && (
+                    <div>
+                      <Title level={5} className="m-0">
+                        Check-out
+                      </Title>
+                      <div className="mt-2 text-sm text-gray-700">
+                        <Text type="secondary">Check-out time:</Text> {checkOutInfo.time}
+                      </div>
+                    </div>
+                  )}
+
+                  {(hasHtml(checkInInfo?.instructions) ||
+                    hasHtml(checkInInfo?.special_instructions)) && (
+                    <div>
+                      <Title level={5} className="m-0">
+                        Important Information
+                      </Title>
+                      <div className="mt-2 space-y-3">
+                        {renderHtml(checkInInfo?.instructions)}
+                        {renderHtml(checkInInfo?.special_instructions)}
+                      </div>
+                    </div>
+                  )}
+
+                  {(hasHtml(feesInfo?.optional) || hasHtml(feesInfo?.mandatory)) && (
+                    <div>
+                      <Title level={5} className="m-0">
+                        Fees & Charges
+                      </Title>
+                      <div className="mt-2 space-y-3">
+                        {renderHtml(feesInfo?.optional)}
+                        {renderHtml(feesInfo?.mandatory)}
+                      </div>
+                    </div>
+                  )}
+
+                  {(hasHtml(policiesInfo?.instructions) ||
+                    hasHtml(policiesInfo?.know_before_you_go)) && (
+                    <div>
+                      <Title level={5} className="m-0">
+                        Policies
+                      </Title>
+                      <div className="mt-2 space-y-3">
+                        {renderHtml(policiesInfo?.instructions)}
+                        {renderHtml(policiesInfo?.know_before_you_go)}
+                      </div>
+                    </div>
+                  )}
+
+                  {!checkInInfo && !checkOutInfo && !feesInfo && !policiesInfo && (
+                    <div className="text-sm text-gray-500">Information not available.</div>
+                  )}
+                </div>
+              </Tabs.TabPane>
+            </Tabs>
+          </Collapse.Panel>
+        </Collapse>
+      </Card>
+    </>
   );
 }
 export default HotelDetail;

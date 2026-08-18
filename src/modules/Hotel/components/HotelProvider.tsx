@@ -54,6 +54,7 @@ export default function HotelProvider({ propertyId }: HotelProviderProps) {
 
     const payload = rows.map((row) => Number(row.providerPropertyIdInput));
     await updateProvider(payload);
+    setProviderPropertyIdDraft({});
   };
 
   return (

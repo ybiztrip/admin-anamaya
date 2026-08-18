@@ -159,7 +159,7 @@ export type HotelOpenSearchType = {
   name: string;
   star: number;
   estimationPrice: number;
-  address: string[];
+  address: string;
   province: string;
   city: string;
   countryCode: string;

@@ -57,7 +57,7 @@ export async function fetchHotelProvider(id: string): Promise<ResponseType<Hotel
   return res.data;
 }
 
-export async function updateHotelProviderIds(
+export async function updateHotelProvider(
   id: string,
   params: HotelProviderUpdatePayloadType,
 ): Promise<ResponseType<any>> {

@@ -22,8 +22,8 @@ export type Menu = {
 
 export const menus: Menu[] = [
   {
-    name: 'hotel',
-    title: 'Hotel',
+    name: 'hotelConfig',
+    title: 'Hotel Config',
     path: HOTEL_PATH,
     childs: [],
     Icon: HomeOutlined,

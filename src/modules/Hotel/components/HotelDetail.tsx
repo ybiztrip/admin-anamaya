@@ -4,6 +4,7 @@ import { Card, Col, Collapse, Image, Row, Space, Tabs, Tag, Typography } from 'a
 import type { HotelPropertyDetailType } from '@/types';
 
 import HotelOpenSearch from './HotelOpenSearch';
+import HotelPropertyDetail from './HotelPropertyDetail';
 import HotelProvider from './HotelProvider';
 
 function HotelDetail({ hotel }: Readonly<{ hotel: HotelPropertyDetailType }>) {
@@ -69,6 +70,10 @@ function HotelDetail({ hotel }: Readonly<{ hotel: HotelPropertyDetailType }>) {
         </div>
 
         <Tabs>
+          <Tabs.TabPane tab="Property Detail" key="property-detail">
+            <HotelPropertyDetail hotel={hotel} />
+          </Tabs.TabPane>
+
           <Tabs.TabPane tab="Providers" key="providers">
             <HotelProvider propertyId={hotel.propertyId} />
           </Tabs.TabPane>

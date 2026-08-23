@@ -2,7 +2,7 @@ import { Button, Input, message, Table } from 'antd';
 import dayjs from 'dayjs';
 import { useMemo, useState } from 'react';
 
-import type { HotelProviderType } from '@/types';
+import type { HotelProviderType, HotelProviderUpdatePayloadType } from '@/types';
 
 import useHotelProvider from '../hooks/useHotelProvider';
 
@@ -12,6 +12,7 @@ type HotelProviderProps = Readonly<{
 
 type HotelProviderRowType = HotelProviderType & {
   providerPropertyIdInput: string;
+  providerAliasNameInput: string;
 };
 
 export default function HotelProvider({ propertyId }: HotelProviderProps) {
@@ -19,6 +20,7 @@ export default function HotelProvider({ propertyId }: HotelProviderProps) {
   const [providerPropertyIdDraft, setProviderPropertyIdDraft] = useState<Record<number, string>>(
     {},
   );
+  const [providerAliasNameDraft, setProviderAliasNameDraft] = useState<Record<number, string>>({});
 
   const rows = useMemo<HotelProviderRowType[]>(
     () =>
@@ -26,35 +28,53 @@ export default function HotelProvider({ propertyId }: HotelProviderProps) {
         ...provider,
         providerPropertyIdInput:
           providerPropertyIdDraft[provider.id] ?? provider.providerPropertyId ?? '',
+        providerAliasNameInput:
+          providerAliasNameDraft[provider.id] ?? provider.providerAliasName ?? '',
       })),
-    [providerData, providerPropertyIdDraft],
+    [providerData, providerPropertyIdDraft, providerAliasNameDraft],
   );
 
   const isDirty = useMemo(
     () =>
-      rows.some(
-        (row) =>
-          row.providerPropertyIdInput.trim() !==
-          (providerData.find((provider) => provider.id === row.id)?.providerPropertyId ?? ''),
-      ),
+      rows.some((row) => {
+        const serverRow = providerData.find((provider) => provider.id === row.id);
+        const serverPropertyId = serverRow?.providerPropertyId ?? '';
+        const serverAliasName = serverRow?.providerAliasName ?? '';
+
+        return (
+          row.providerPropertyIdInput.trim() !== serverPropertyId ||
+          row.providerAliasNameInput.trim() !== serverAliasName
+        );
+      }),
     [providerData, rows],
   );
 
   const onSave = async () => {
-    const hasInvalidInput = rows.some(
-      (row) =>
-        row.providerPropertyIdInput.trim().length === 0 ||
-        Number.isNaN(Number(row.providerPropertyIdInput)),
-    );
+    const hasInvalidInput = rows.some((row) => {
+      const trimmed = row.providerPropertyIdInput.trim();
+      return trimmed.length === 0 || Number.isNaN(Number(trimmed));
+    });
 
     if (hasInvalidInput) {
       message.error('Provider Property ID is required and must be a number.');
       return;
     }
 
-    const payload = rows.map((row) => Number(row.providerPropertyIdInput));
+    const hasInvalidAlias = rows.some((row) => row.providerAliasNameInput.trim().length === 0);
+    if (hasInvalidAlias) {
+      message.error('Provider Alias Name is required.');
+      return;
+    }
+
+    const payload: HotelProviderUpdatePayloadType = rows.map((row) => ({
+      provider: row.provider,
+      providerPropertyId: Number(row.providerPropertyIdInput.trim()),
+      providerAliasName: row.providerAliasNameInput.trim(),
+    }));
+
     await updateProvider(payload);
     setProviderPropertyIdDraft({});
+    setProviderAliasNameDraft({});
   };
 
   return (
@@ -75,9 +95,21 @@ export default function HotelProvider({ propertyId }: HotelProviderProps) {
           },
           {
             title: 'Provider Alias Name',
-            dataIndex: 'providerAliasName',
-            key: 'providerAliasName',
+            dataIndex: 'providerAliasNameInput',
+            key: 'providerAliasNameInput',
             width: 260,
+            render: (_: string, record: HotelProviderRowType) => (
+              <Input
+                value={record.providerAliasNameInput}
+                onChange={(e) => {
+                  setProviderAliasNameDraft((prevDraft) => ({
+                    ...prevDraft,
+                    [record.id]: e.target.value,
+                  }));
+                }}
+                placeholder="Input provider alias name"
+              />
+            ),
           },
           {
             title: 'Provider Property ID',

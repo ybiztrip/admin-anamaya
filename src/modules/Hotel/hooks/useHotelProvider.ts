@@ -4,6 +4,7 @@ import { message } from 'antd';
 import { fetchHotelProvider, updateHotelProviderIds } from '@/api';
 import { DEFAULT_ERROR_MESSAGE } from '@/constants/common';
 import { HOTEL_PROVIDER } from '@/constants/queryKey';
+import type { HotelProviderUpdatePayloadType } from '@/types';
 
 export default function useHotelProvider(propertyId: string) {
   const {
@@ -18,10 +19,8 @@ export default function useHotelProvider(propertyId: string) {
   });
 
   const { mutateAsync: updateProvider, isPending: isUpdating } = useMutation({
-    mutationFn: (providerPropertyId: number[]) =>
-      updateHotelProviderIds(propertyId, {
-        providerPropertyId,
-      }),
+    mutationFn: (payload: HotelProviderUpdatePayloadType) =>
+      updateHotelProviderIds(propertyId, payload),
     onSuccess: (res) => {
       if (!res.success) {
         message.error(res.message || DEFAULT_ERROR_MESSAGE);

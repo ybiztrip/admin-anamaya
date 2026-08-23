@@ -146,9 +146,11 @@ export type HotelProviderType = {
   updatedOn: number;
 };
 
-export type HotelProviderUpdateIdsPayloadType = {
-  providerPropertyId: number[];
-};
+export type HotelProviderUpdatePayloadType = {
+  provider: string;
+  providerPropertyId: number;
+  providerAliasName: string;
+}[];
 
 export type HotelOpenSearchPayloadType = {
   propertyIds: string[];

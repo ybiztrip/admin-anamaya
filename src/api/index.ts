@@ -17,7 +17,7 @@ import type {
   HotelPropertyDetailPayloadType,
   HotelPropertyDetailResponseType,
   HotelProviderType,
-  HotelProviderUpdateIdsPayloadType,
+  HotelProviderUpdatePayloadType,
   HotelSearchPayloadType,
   HotelType,
   PaginationResponseType,
@@ -59,7 +59,7 @@ export async function fetchHotelProvider(id: string): Promise<ResponseType<Hotel
 
 export async function updateHotelProviderIds(
   id: string,
-  params: HotelProviderUpdateIdsPayloadType,
+  params: HotelProviderUpdatePayloadType,
 ): Promise<ResponseType<any>> {
   const res = await axios.post(HOTEL_ADMIN_PROPERTY_MAPPING_API.replace(':id', id), params);
   return res.data;

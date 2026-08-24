@@ -1,5 +1,6 @@
 export * from './account';
 export * from './hotel';
+export * from './price';
 export * from './provider';
 export * from './user';
 

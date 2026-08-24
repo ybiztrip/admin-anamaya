@@ -4,7 +4,9 @@ import {
   ACCOUNT_API,
   DOCUMENT_UPLOAD_API,
   DOCUMENT_URL_API,
+  FLIGHT_ADMIN_PRICE_CONFIG_API,
   HOTEL_ADMIN_OPEN_SEARCH_API,
+  HOTEL_ADMIN_PRICE_CONFIG_API,
   HOTEL_ADMIN_PROPERTY_MAPPING_API,
   HOTEL_GEO_LIST_API,
   HOTEL_PROPERTY_DETAIL_API,
@@ -25,6 +27,8 @@ import type {
   HotelSearchPayloadType,
   HotelType,
   PaginationResponseType,
+  PriceFetchParamsType,
+  PriceType,
   ProviderFetchPayloadType,
   ProviderType,
   ResponseType,
@@ -81,6 +85,30 @@ export async function updateHotelOpenSearch(
   params: HotelOpenSearchType,
 ): Promise<ResponseType<any>> {
   const res = await axios.put(HOTEL_ADMIN_OPEN_SEARCH_API.replace(':id', id), params);
+  return res.data;
+}
+
+export async function fetchHotelPriceConfig(
+  params: PriceFetchParamsType,
+): Promise<ResponseType<PriceType>> {
+  const res = await axios.get(HOTEL_ADMIN_PRICE_CONFIG_API, { params });
+  return res.data;
+}
+
+export async function updateHotelPriceConfig(params: PriceType): Promise<ResponseType<any>> {
+  const res = await axios.post(HOTEL_ADMIN_PRICE_CONFIG_API, params);
+  return res.data;
+}
+
+export async function fetchFlightPriceConfig(
+  params: PriceFetchParamsType,
+): Promise<ResponseType<PriceType>> {
+  const res = await axios.get(FLIGHT_ADMIN_PRICE_CONFIG_API, { params });
+  return res.data;
+}
+
+export async function updateFlightPriceConfig(params: PriceType): Promise<ResponseType<any>> {
+  const res = await axios.post(FLIGHT_ADMIN_PRICE_CONFIG_API, params);
   return res.data;
 }
 

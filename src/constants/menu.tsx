@@ -1,7 +1,7 @@
-import { HomeOutlined,PoweroffOutlined } from '@ant-design/icons';
+import { DollarOutlined, HomeOutlined, PoweroffOutlined } from '@ant-design/icons';
 import type { ComponentType } from 'react';
 
-import { HOTEL_PATH, PROVIDER_ENABLEMENT_PATH } from '@/constants/routePath';
+import { HOTEL_PATH, PRICE_CONFIG_PATH, PROVIDER_ENABLEMENT_PATH } from '@/constants/routePath';
 
 export type MenuChild = {
   name: string;
@@ -34,5 +34,12 @@ export const menus: Menu[] = [
     path: PROVIDER_ENABLEMENT_PATH,
     childs: [],
     Icon: PoweroffOutlined,
+  },
+  {
+    name: 'priceConfig',
+    title: 'Price Config',
+    path: PRICE_CONFIG_PATH,
+    childs: [],
+    Icon: DollarOutlined,
   },
 ];

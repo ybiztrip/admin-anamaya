@@ -1,5 +1,4 @@
-import { Table } from 'antd';
-import dayjs from 'dayjs';
+import { Table, Tag } from 'antd';
 
 import { DEFAULT_ERROR_MESSAGE } from '@/constants/common';
 import type { AccountType } from '@/types';
@@ -44,18 +43,9 @@ function AccountList({ onOpenAccountDetail }: AccountListProps) {
             title: 'Status',
             dataIndex: 'status',
             key: 'status',
-          },
-          {
-            title: 'Created On',
-            dataIndex: 'createdOn',
-            key: 'createdOn',
-            render: (createdOn: number) => dayjs(createdOn).format('DD-MMM-YYYY HH:mm:ss'),
-          },
-          {
-            title: 'Updated On',
-            dataIndex: 'updatedOn',
-            key: 'updatedOn',
-            render: (updatedOn: number) => dayjs(updatedOn).format('DD-MMM-YYYY HH:mm:ss'),
+            render: (status: string) => (
+              <Tag color={status === 'active' ? 'green' : 'red'}>{status}</Tag>
+            ),
           },
         ]}
       />

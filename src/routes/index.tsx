@@ -5,6 +5,8 @@ import {
   HOTEL_DETAIL_PATH,
   HOTEL_PATH,
   LOGIN_PATH,
+  PRICE_CONFIG_DETAIL_PATH,
+  PRICE_CONFIG_PATH,
   PROVIDER_ENABLEMENT_DETAIL_PATH,
   PROVIDER_ENABLEMENT_PATH,
 } from '@/constants/routePath';
@@ -12,6 +14,8 @@ import HomeView from '@/modules/Home/HomeView';
 import HotelDetailView from '@/modules/Hotel/HotelDetailView';
 import HotelView from '@/modules/Hotel/HotelView';
 import LoginView from '@/modules/Login/LoginView';
+import PriceDetailView from '@/modules/Price/PriceDetailView';
+import PriceView from '@/modules/Price/PriceView';
 import ProviderDetailView from '@/modules/Provider/ProviderDetailView';
 import ProviderView from '@/modules/Provider/ProviderView';
 
@@ -58,6 +62,22 @@ function App() {
         element={
           <ProtectedRoute>
             <ProviderDetailView />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={PRICE_CONFIG_PATH}
+        element={
+          <ProtectedRoute>
+            <PriceView />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={PRICE_CONFIG_DETAIL_PATH}
+        element={
+          <ProtectedRoute>
+            <PriceDetailView />
           </ProtectedRoute>
         }
       />

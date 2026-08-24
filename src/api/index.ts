@@ -1,6 +1,7 @@
 import type { AxiosRequestConfig } from 'axios';
 
 import {
+  ACCOUNT_API,
   DOCUMENT_UPLOAD_API,
   DOCUMENT_URL_API,
   HOTEL_ADMIN_OPEN_SEARCH_API,
@@ -8,9 +9,12 @@ import {
   HOTEL_GEO_LIST_API,
   HOTEL_PROPERTY_DETAIL_API,
   HOTEL_SEARCH_API,
+  PROVIDER_FETCH_API,
+  PROVIDER_SAVE_API,
   USERS_DETAIL_API,
 } from '@/constants/api';
 import type {
+  AccountType,
   HotelGeoListPayloadType,
   HotelGeoListType,
   HotelOpenSearchType,
@@ -21,6 +25,8 @@ import type {
   HotelSearchPayloadType,
   HotelType,
   PaginationResponseType,
+  ProviderFetchPayloadType,
+  ProviderType,
   ResponseType,
   UserType,
 } from '@/types';
@@ -88,5 +94,22 @@ export async function documentUpload(
 
 export async function documentUrl(key: string): Promise<ResponseType<string>> {
   const res = await axios.get(DOCUMENT_URL_API, { params: { key } });
+  return res.data;
+}
+
+export async function fetchAccounts(): Promise<ResponseType<AccountType[]>> {
+  const res = await axios.get(ACCOUNT_API);
+  return res.data;
+}
+
+export async function fetchProviders(
+  params: ProviderFetchPayloadType,
+): Promise<ResponseType<ProviderType[]>> {
+  const res = await axios.post(PROVIDER_FETCH_API, params);
+  return res.data;
+}
+
+export async function saveProviders(params: ProviderType): Promise<ResponseType<any>> {
+  const res = await axios.post(PROVIDER_SAVE_API, params);
   return res.data;
 }

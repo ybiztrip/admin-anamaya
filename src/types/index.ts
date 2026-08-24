@@ -1,4 +1,6 @@
+export * from './account';
 export * from './hotel';
+export * from './provider';
 export * from './user';
 
 export type ResponseType<T> = {

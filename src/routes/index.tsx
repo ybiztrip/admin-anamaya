@@ -1,11 +1,20 @@
 import { Route, Routes } from 'react-router-dom';
 
-import { HOME_PATH, HOTEL_DETAIL_PATH, HOTEL_PATH, LOGIN_PATH } from '@/constants/routePath';
+import {
+  HOME_PATH,
+  HOTEL_DETAIL_PATH,
+  HOTEL_PATH,
+  LOGIN_PATH,
+  PROVIDER_ENABLEMENT_DETAIL_PATH,
+  PROVIDER_ENABLEMENT_PATH,
+} from '@/constants/routePath';
 import HomeView from '@/modules/Home/HomeView';
+import HotelDetailView from '@/modules/Hotel/HotelDetailView';
 import HotelView from '@/modules/Hotel/HotelView';
 import LoginView from '@/modules/Login/LoginView';
+import ProviderDetailView from '@/modules/Provider/ProviderDetailView';
+import ProviderView from '@/modules/Provider/ProviderView';
 
-import HotelDetailView from '../modules/Hotel/HotelDetailView';
 import ProtectedRoute from './ProtectedRoute';
 
 function App() {
@@ -33,6 +42,22 @@ function App() {
         element={
           <ProtectedRoute>
             <HotelDetailView />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={PROVIDER_ENABLEMENT_PATH}
+        element={
+          <ProtectedRoute>
+            <ProviderView />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={PROVIDER_ENABLEMENT_DETAIL_PATH}
+        element={
+          <ProtectedRoute>
+            <ProviderDetailView />
           </ProtectedRoute>
         }
       />

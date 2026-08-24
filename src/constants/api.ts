@@ -18,3 +18,9 @@ export const HOTEL_GEO_LIST_API = HOTEL_API + '/geo/list';
 export const HOTEL_PROPERTY_DETAIL_API = HOTEL_API + '/property-detail';
 export const HOTEL_ADMIN_PROPERTY_MAPPING_API = HOTEL_API + '/admin/property-mapping/:id';
 export const HOTEL_ADMIN_OPEN_SEARCH_API = HOTEL_API + '/admin/opensearch/:id';
+
+export const ACCOUNT_API = API_V1 + '/admin/general/account';
+
+export const PROVIDER_API = API_V1 + '/admin/provider';
+export const PROVIDER_FETCH_API = PROVIDER_API + '/fetch';
+export const PROVIDER_SAVE_API = PROVIDER_API + '/save';

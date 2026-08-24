@@ -1,4 +1,10 @@
-import type { HotelOpenSearchType, HotelProviderType, ResponseType } from '@/types';
+import type {
+  AccountType,
+  HotelOpenSearchType,
+  HotelProviderType,
+  ProviderType,
+  ResponseType,
+} from '@/types';
 
 export const mockFetchHotelProvider: ResponseType<HotelProviderType[]> = {
   success: true,
@@ -55,4 +61,58 @@ export const mockFetchHotelOpenSearch: ResponseType<HotelOpenSearchType> = {
     rank: 286700,
     accommodationType: 'INN',
   },
+};
+
+export const mockFetchAccount: ResponseType<AccountType[]> = {
+  success: true,
+  message: 'Success',
+  data: [
+    {
+      id: '075e1fd2-57e7-11f1-a34a-06f23ac30fa9',
+      status: 'active',
+      createdOn: 1779653319000,
+      updatedOn: 1779653319000,
+      name: 'OMS Company C',
+      legalName: 'OMS Company C',
+    },
+    {
+      id: '0d10b603-07e1-11f1-82a4-06f23ac30fa9',
+      status: 'active',
+      createdOn: 1770854659000,
+      updatedOn: 1782944925000,
+      name: 'Mekari Expense Dev',
+      legalName: 'Mekari Expense Dev',
+    },
+  ],
+};
+
+export const mockFetchProvider: ResponseType<ProviderType[]> = {
+  success: true,
+  message: 'Success',
+  data: [
+    {
+      accountId: '680999c0-8361-11f0-848b-06f23ac30fa9',
+      provider: 'asfntn',
+      category: 'flight',
+      status: 'disabled',
+    },
+    {
+      accountId: '680999c0-8361-11f0-848b-06f23ac30fa9',
+      provider: 'ata',
+      category: 'flight',
+      status: 'enabled',
+    },
+    {
+      accountId: '680999c0-8361-11f0-848b-06f23ac30fa9',
+      provider: 'tvlk',
+      category: 'flight',
+      status: 'enabled',
+    },
+    {
+      accountId: '680999c0-8361-11f0-848b-06f23ac30fa9',
+      provider: 'tktdcm',
+      category: 'flight',
+      status: 'disabled',
+    },
+  ],
 };

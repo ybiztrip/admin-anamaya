@@ -73,7 +73,7 @@ export default function PriceConfig({ accountId, category }: PriceConfigProps) {
             name="priceReduction"
             rules={[{ required: true, message: 'Price reduction is required' }]}
           >
-            <InputNumber min={0} className="w-full" />
+            <InputNumber min={0} step="0.01" className="w-full" />
           </Form.Item>
 
           <Form.Item
@@ -81,7 +81,7 @@ export default function PriceConfig({ accountId, category }: PriceConfigProps) {
             name="priceAmplifier"
             rules={[{ required: true, message: 'Price amplifier is required' }]}
           >
-            <InputNumber min={0} className="w-full" />
+            <InputNumber min={0} step="0.01" className="w-full" />
           </Form.Item>
 
           <Form.Item

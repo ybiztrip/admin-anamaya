@@ -86,7 +86,7 @@ function HotelDetail({ hotel }: Readonly<{ hotel: HotelPropertyDetailType }>) {
 
       <Card size="small" className="mt-4">
         <Collapse defaultActiveKey={[]} bordered={false} style={{ background: 'transparent' }}>
-          <Collapse.Panel header="Hotel details" key="details">
+          <Collapse.Panel header="Other details" key="details">
             <Tabs>
               <Tabs.TabPane tab="Galleries" key="galleries">
                 {images.length > 1 && (

@@ -1,4 +1,4 @@
-import { Button, Input, message, Table } from 'antd';
+import { Button, Input, message, Select, Table } from 'antd';
 import dayjs from 'dayjs';
 import { useMemo, useState } from 'react';
 
@@ -13,6 +13,7 @@ type HotelProviderProps = Readonly<{
 type HotelProviderRowType = HotelProviderType & {
   providerPropertyIdInput: string;
   providerAliasNameInput: string;
+  statusInput: 'active' | 'inactive';
 };
 
 export default function HotelProvider({ propertyId }: HotelProviderProps) {
@@ -21,6 +22,16 @@ export default function HotelProvider({ propertyId }: HotelProviderProps) {
     {},
   );
   const [providerAliasNameDraft, setProviderAliasNameDraft] = useState<Record<number, string>>({});
+  const [providerStatusDraft, setProviderStatusDraft] = useState<
+    Record<number, 'active' | 'inactive'>
+  >({});
+
+  const normalizeStatus = (status: string | null | undefined): 'active' | 'inactive' =>
+    status === 'inactive' ? 'inactive' : 'active';
+
+  const initialProviderById = useMemo(() => {
+    return new Map(providerData.map((provider) => [provider.id, provider]));
+  }, [providerData]);
 
   const rows = useMemo<HotelProviderRowType[]>(
     () =>
@@ -30,51 +41,58 @@ export default function HotelProvider({ propertyId }: HotelProviderProps) {
           providerPropertyIdDraft[provider.id] ?? provider.providerPropertyId ?? '',
         providerAliasNameInput:
           providerAliasNameDraft[provider.id] ?? provider.providerAliasName ?? '',
+        statusInput: providerStatusDraft[provider.id] ?? normalizeStatus(provider.status),
       })),
-    [providerData, providerPropertyIdDraft, providerAliasNameDraft],
+    [providerData, providerPropertyIdDraft, providerAliasNameDraft, providerStatusDraft],
   );
 
-  const isDirty = useMemo(
-    () =>
-      rows.some((row) => {
-        const serverRow = providerData.find((provider) => provider.id === row.id);
-        const serverPropertyId = serverRow?.providerPropertyId ?? '';
-        const serverAliasName = serverRow?.providerAliasName ?? '';
+  const dirtyRows = useMemo(() => {
+    return rows.filter((row) => {
+      const initialRow = initialProviderById.get(row.id);
+      const initialPropertyId = initialRow?.providerPropertyId ?? '';
+      const initialAliasName = initialRow?.providerAliasName ?? '';
+      const initialStatus = normalizeStatus(initialRow?.status);
 
-        return (
-          row.providerPropertyIdInput.trim() !== serverPropertyId ||
-          row.providerAliasNameInput.trim() !== serverAliasName
-        );
-      }),
-    [providerData, rows],
-  );
+      return (
+        row.providerPropertyIdInput.trim() !== initialPropertyId ||
+        row.providerAliasNameInput.trim() !== initialAliasName ||
+        row.statusInput !== initialStatus
+      );
+    });
+  }, [rows, initialProviderById]);
+
+  const isDirty = dirtyRows.length > 0;
 
   const onSave = async () => {
-    const hasInvalidInput = rows.some((row) => {
-      const trimmed = row.providerPropertyIdInput.trim();
-      return trimmed.length === 0 || Number.isNaN(Number(trimmed));
-    });
+    if (dirtyRows.length === 0) return;
 
-    if (hasInvalidInput) {
+    const isInvalidPropertyId = dirtyRows.some((row) => {
+      const trimmed = row.providerPropertyIdInput.trim();
+      if (trimmed.length === 0) return true;
+      return Number.isNaN(Number(trimmed));
+    });
+    if (isInvalidPropertyId) {
       message.error('Provider Property ID is required and must be a number.');
       return;
     }
 
-    const hasInvalidAlias = rows.some((row) => row.providerAliasNameInput.trim().length === 0);
-    if (hasInvalidAlias) {
+    const isInvalidAliasName = dirtyRows.some((row) => row.providerAliasNameInput.trim().length === 0);
+    if (isInvalidAliasName) {
       message.error('Provider Alias Name is required.');
       return;
     }
 
-    const payload: HotelProviderUpdatePayloadType = rows.map((row) => ({
+    const payload: HotelProviderUpdatePayloadType = dirtyRows.map((row) => ({
       provider: row.provider,
       providerPropertyId: Number(row.providerPropertyIdInput.trim()),
       providerAliasName: row.providerAliasNameInput.trim(),
+      status: row.statusInput,
     }));
 
     await updateProvider(payload);
     setProviderPropertyIdDraft({});
     setProviderAliasNameDraft({});
+    setProviderStatusDraft({});
   };
 
   return (
@@ -126,6 +144,28 @@ export default function HotelProvider({ propertyId }: HotelProviderProps) {
                   }));
                 }}
                 placeholder="Input provider property id"
+              />
+            ),
+          },
+          {
+            title: 'Status',
+            dataIndex: 'statusInput',
+            key: 'statusInput',
+            width: 140,
+            render: (_: string, record: HotelProviderRowType) => (
+              <Select
+                value={record.statusInput}
+                options={[
+                  { value: 'active', label: 'Active' },
+                  { value: 'inactive', label: 'Inactive' },
+                ]}
+                onChange={(value) => {
+                  setProviderStatusDraft((prevDraft) => ({
+                    ...prevDraft,
+                    [record.id]: value,
+                  }));
+                }}
+                style={{ width: '100%' }}
               />
             ),
           },

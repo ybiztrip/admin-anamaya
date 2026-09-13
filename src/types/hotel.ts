@@ -150,6 +150,7 @@ export type HotelProviderUpdatePayloadType = {
   provider: string;
   providerPropertyId: number;
   providerAliasName: string;
+  status: 'active' | 'inactive';
 }[];
 
 export type HotelOpenSearchPayloadType = {

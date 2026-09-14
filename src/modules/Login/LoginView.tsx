@@ -1,4 +1,4 @@
-import { Button, Card, Form, Image, Input, Layout, Row } from 'antd';
+import { Button, Form, Image, Input, Layout, Typography } from 'antd';
 import { Link, Navigate } from 'react-router-dom';
 
 import AnamayaLogo from '@/assets/anamaya.webp';
@@ -7,6 +7,8 @@ import { HOME_PATH } from '@/constants/routePath';
 import useAuth from '@/hooks/useAuth';
 
 import useLogin from './hooks/useLogin';
+
+const { Title, Text } = Typography;
 
 function Login() {
   const { isAuthenticated } = useAuth();
@@ -17,51 +19,58 @@ function Login() {
   }
 
   return (
-    <Layout>
-      <div
-        className="flex justify-center items-center h-screen bg-cover bg-center"
-        style={{
-          backgroundImage: `linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)), url(${Background})`,
-        }}
-      >
-        <Card
-          className="w-96"
+    <Layout className="min-h-screen">
+      <div className="flex min-h-screen flex-col md:flex-row">
+        <aside
+          className="relative flex min-h-[240px] flex-1 flex-col items-center justify-center overflow-hidden bg-cover bg-center px-8 py-10 md:px-12 md:py-14"
           style={{
-            width: '90%',
-            maxWidth: 400,
+            backgroundImage: `linear-gradient(rgba(225,230,238,0.75), rgba(225,230,238,0.75)), url(${Background})`,
           }}
         >
-          <Link to={HOME_PATH}>
-            <div className="text-center mb-8">
-              <Image src={AnamayaLogo} width={200} preview={false} />
+          <div className="relative z-10 max-w-md text-center">
+            <Link to={HOME_PATH} className="mb-8 inline-block">
+              <Image src={AnamayaLogo} width={180} preview={false} />
+            </Link>
+          </div>
+        </aside>
+
+        <main className="flex flex-1 items-center justify-center bg-[#f5f6f8] px-6 py-12 md:px-12">
+          <div className="w-full max-w-[400px]">
+            <div className="mb-8">
+              <Title level={3} className="!mb-1 !mt-0">
+                Login to Admin
+              </Title>
+              <Text type="secondary">Use your admin credentials to continue.</Text>
             </div>
-          </Link>
 
-          <Form layout="vertical" form={form} onFinish={login}>
-            <Form.Item
-              name="username"
-              label="Username"
-              rules={[{ required: true, whitespace: true }]}
-            >
-              <Input placeholder="Username" size="large" />
-            </Form.Item>
-            <Form.Item
-              name="password"
-              label="Password"
-              rules={[{ required: true, whitespace: true }]}
-            >
-              <Input placeholder="Password" size="large" type="password" />
-            </Form.Item>
+            <Form layout="vertical" form={form} onFinish={login} requiredMark={false}>
+              <Form.Item
+                name="username"
+                label="Username"
+                rules={[{ required: true, whitespace: true }]}
+              >
+                <Input placeholder="Username" size="large" autoComplete="username" />
+              </Form.Item>
+              <Form.Item
+                name="password"
+                label="Password"
+                rules={[{ required: true, whitespace: true }]}
+              >
+                <Input.Password
+                  placeholder="Password"
+                  size="large"
+                  autoComplete="current-password"
+                />
+              </Form.Item>
 
-            <Row justify="end">
-              <Form.Item>
-                <Button type="primary" size="large" htmlType="submit" loading={isLoading}>
+              <Form.Item className="!mb-0 !mt-2">
+                <Button type="primary" size="large" htmlType="submit" loading={isLoading} block>
                   Login
                 </Button>
               </Form.Item>
-            </Row>
-          </Form>
-        </Card>
+            </Form>
+          </div>
+        </main>
       </div>
     </Layout>
   );
